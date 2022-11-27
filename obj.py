@@ -1,7 +1,10 @@
 import struct 
 
 def color(r, g, b):
-  return bytes([b, g, r])
+    r = int(min(255, max(r, 0)))
+    g = int(min(255, max(g, 0)))
+    b = int(min(255, max(b, 0)))
+    return bytes([b, g, r])
 
 
 class Obj(object):
@@ -11,6 +14,7 @@ class Obj(object):
             self.vertices = []
             self.tvertices = []
             self.vfaces = []
+            self.normals = []
             self.read()
 
     def read(self):
@@ -23,7 +27,9 @@ class Obj(object):
                 if prefix == 'v':
                     self.vertices.append(list(map(float, value.split(' '))))
                 if prefix == 'vt':
-                    self.tvertices.append(list(map(float, value.split(' '))))                    
+                    self.tvertices.append(list(map(float, value.split(' ')))) 
+                if prefix == 'vn':
+                    self.normals.append(list(map(float, value.split(' '))))                   
                 elif prefix == 'f':
                     try:
                         self.vfaces.append([list(map(int , face.split('/'))) for face in value.split(' ')])

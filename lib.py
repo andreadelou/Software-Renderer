@@ -71,4 +71,7 @@ def dword(d):
   return struct.pack('=l', d)
 
 def color(r, g, b):
-  return bytes([b, g, r])
+    r = int(min(255, max(r, 0)))
+    g = int(min(255, max(g, 0)))
+    b = int(min(255, max(b, 0)))
+    return bytes([b, g, r])
