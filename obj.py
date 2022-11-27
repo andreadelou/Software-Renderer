@@ -37,28 +37,31 @@ class Texture(object):
         self.read()
 
     def read(self):
-        image = open(self.path, "rb")
-        image.seek(2 + 4 + 4) 
-        header_size = struct.unpack("=l", image.read(4))[0]  
-        image.seek(2 + 4 + 4 + 4 + 4)
-        
-        self.width = struct.unpack("=l", image.read(4))[0]  
-        self.height = struct.unpack("=l", image.read(4))[0] 
-        self.pixels = []
-        image.seek(header_size)
-        for y in range(self.height):
-            self.pixels.append([])
-            for x in range(self.width):
-                b = ord(image.read(1))
-                g = ord(image.read(1))
-                r = ord(image.read(1))
-                self.pixels[y].append(color(r,g,b))
-        image.close()
+        with open(self.path, "rb") as image:
+            image.seek(10)
+            headerSize = struct.unpack('=l', image.read(4))[0]
 
-    def get_color(self, tx, ty, intensity=1):
-        x = int(tx * self.width)
-        y = int(ty * self.height)
-        try:
-            return bytes(map(lambda b: round(b*intensity) if b*intensity > 0 else 0, self.pixels[y][x]))
-        except:
-            pass  
+            image.seek(14 + 4)
+            self.width = struct.unpack('=l', image.read(4))[0]
+            self.height = struct.unpack('=l', image.read(4))[0]
+
+            image.seek(headerSize)
+
+            self.pixels = []
+
+            for y in range(self.height):
+                self.pixels.append([])
+                for x in range(self.width):
+                    b = ord(image.read(1)) / 255
+                    g = ord(image.read(1)) / 255
+                    r = ord(image.read(1)) / 255
+
+                    self.pixels[y].append( color(r,g,b) )
+
+    def getColor(self, tx, ty, intensity = 1):
+        if 0<=tx<1 and 0<=ty<1:
+            x = int(tx * self.width)
+            y = int(ty * self.height)
+            return self.pixels[y][x]
+        else:
+            return color(0,0,0)
