@@ -12,9 +12,16 @@ def dword(dw):
     dw = struct.pack('=l', dw)   
     return dw  
 
-def color_select(r, g, b):
-    return bytes([int(b * 255), int(g * 255), int(r * 255)])
+# def color_select(r, g, b):
+#     return bytes([int(b * 255), int(g * 255), int(r * 255)])
+def colorrgb(r, g, b):
+    return bytes([b, g, r])
 
+def color_select(r, g, b):
+  return colorrgb(clamping(r*255), clamping(g*255), clamping(b*255))
+  
+def clamping(num):
+  return int(max(min(num, 255), 0))
 
 def cross(v1, v2):
     return (
@@ -62,6 +69,7 @@ class Render(object):
         self.height = 0
         self.pixels = 0
         self.colort = color_select(0, 0, 0)
+        self.background = color_select(211, 211, 211)
         self.viewport_x = 0 
         self.viewport_y = 0
         self.viewport_height = 0
@@ -74,7 +82,7 @@ class Render(object):
         self.width = width
         self.height = height
         
-        self.framebuffer = [[self.colort for x in range(self.width)]
+        self.framebuffer = [[self.background for x in range(self.width)]
                        for y in range(self.height)]
         
         self.zBuffer = [
@@ -88,11 +96,11 @@ class Render(object):
             self.framebuffer[x][y] = color or self.colort
 
     
-    def transform_vertex(self, vertex, scale_factor, translate_factor):
+    def transform_vertex(self, vertex, translate, scale):
         return V3(
-            (vertex[0] * scale_factor[0]) + translate_factor[0], 
-            (vertex[1] * scale_factor[1]) + translate_factor[1],
-            (vertex[2] * scale_factor[2]) + translate_factor[2]
+            round((vertex[0] * scale[0]) + translate[0]),
+            round((vertex[1] * scale[1]) + translate[1]),
+            round((vertex[2] * scale[2]) + translate[2])
         )
     
     def load(self, filename, translate, scale, texture = None):
@@ -242,6 +250,6 @@ class Render(object):
             # Color table
             for y in range(self.height):
                 for x in range(self.width):
-                    file.write(self.framebuffer[y][x])
+                    file.write(self.framebuffer[x][y])
             file.close()
             

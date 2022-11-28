@@ -4,12 +4,12 @@ from Obj import *
 
 r = Render()
 
-r.glCreateWindow(1024, 1024)
+r.glCreateWindow(1000, 1000)
 
 r.lightPosition(0, 0, 1)
     
-textura = Texture('./earth.bmp')
+textura = Texture('./green.bmp')
 
-r.load('./earth.obj', translate=[512, 512, 0], scale=[1, 1, 1], texture=textura)
+r.load('./couch.obj', translate=[512, 512, 0], scale=[0.001, 0.001, 0.01], texture=textura)
 
 r.glFinish('out.bmp')
