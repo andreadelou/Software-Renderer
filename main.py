@@ -10,6 +10,6 @@ r.lightPosition(0, 0, 1)
     
 textura = Texture('./earth.bmp')
 
-r.load('./earth.obj', translate=[512, 512, 0], scale=[0.001, 0.001, 0.001], texture=textura)
+r.load('./earth.obj', translate=[512, 512, 0], scale=[0.01, 0.01, 0.01], texture=textura)
 
 r.glFinish('out.bmp')
