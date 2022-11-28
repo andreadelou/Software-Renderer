@@ -13,7 +13,7 @@ def dword(dw):
     return dw  
 
 def color_select(r, g, b):
-   return bytes([b, g, r])
+    return bytes([int(b * 255), int(g * 255), int(r * 255)])
 
 
 def cross(v1, v2):
@@ -113,8 +113,8 @@ class Render(object):
                 v4 = self.transform_vertex(model.vertex[f4], translate, scale)
 
                 if not texture:
-                    self.triangle_babycenter(v1, v2, v3, color=color_select(255,255,255))
-                    self.triangle_babycenter(v1, v3, v4, color=color_select(255,255,255))
+                    self.triangle_babycenter(v1, v2, v3)
+                    self.triangle_babycenter(v1, v3, v4)
                 else:
                     t1 = face[0][1] - 1
                     t2 = face[1][1] - 1
@@ -140,7 +140,7 @@ class Render(object):
                 v3 = self.transform_vertex(model.vertex[f3], translate, scale)
 
                 if not texture:
-                    self.triangle_babycenter(v1, v2, v3, color=color_select(255,255,255))
+                    self.triangle_babycenter(v1, v2, v3)
                 else:
                     t1 = face[0][1] - 1
                     t2 = face[1][1] - 1
@@ -172,12 +172,9 @@ class Render(object):
             i = 1
 
 
-        # print(i)
-        self.colort = color_select(
-            round(255 * i),
-            round(255 * i),
-            round(255 * i)
-        )
+        color_tex = 1 * i
+
+        self.render_color = color_select(color_tex, color_tex, color_tex)
 
         min,max = bounding_box(A, B, C)
         min.round_coords()

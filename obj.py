@@ -7,10 +7,10 @@ class Obj(object):
     def __init__(self, filename):
         with open(filename) as f:
             self.lines = f.read().splitlines()
-            self.vertex = []
-            self.tvertex = []
-            self.faces = []
-            self.read()
+        self.vertex = []
+        self.tvertex = []
+        self.faces = []
+        self.read()
 
     def read(self):
         for line in self.lines:
@@ -37,9 +37,9 @@ class Texture(object):
     
     def read(self):
         with open(self.path, 'rb') as image:
-            image.seek(2 + 4 + 2 +  2)
+            image.seek(10)
             header_size = struct.unpack('=l', image.read(4))[0]
-            image.seek(2 + 4 + 2 + 2 + 4 + 4)
+            image.seek(18)
             self.width = struct.unpack('=l', image.read(4))[0]
             self.height = struct.unpack('=l', image.read(4))[0]
             
