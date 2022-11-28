@@ -68,8 +68,8 @@ class Render(object):
         self.width = 0
         self.height = 0
         self.pixels = 0
-        self.colort = color_select(0, 0, 0)
-        self.background = color_select(211, 211, 211)
+        self.colort = color_select(255, 255, 255)
+        self.background = color_select(0, 0, 0)
         self.viewport_x = 0 
         self.viewport_y = 0
         self.viewport_height = 0
@@ -250,6 +250,6 @@ class Render(object):
             # Color table
             for y in range(self.height):
                 for x in range(self.width):
-                    file.write(self.framebuffer[x][y])
+                    file.write(self.framebuffer[y][x])
             file.close()
             
