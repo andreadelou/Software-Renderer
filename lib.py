@@ -105,10 +105,10 @@ class Render(object):
     
     def load(self, filename, translate, scale, texture = None):
         model = Obj(filename)
-
+        i=0 
         for face in model.faces:
             vcount = len(face)
-            
+            i+=1
             if vcount == 4:
                 f1 = face[0][0] - 1
                 f2 = face[1][0] - 1
@@ -120,6 +120,7 @@ class Render(object):
                 v3 = self.transform_vertex(model.vertex[f3], translate, scale)
                 v4 = self.transform_vertex(model.vertex[f4], translate, scale)
 
+                
                 if not texture:
                     self.triangle_babycenter(v1, v2, v3)
                     self.triangle_babycenter(v1, v3, v4)
@@ -146,7 +147,12 @@ class Render(object):
                 v1 = self.transform_vertex(model.vertex[f1], translate, scale)
                 v2 = self.transform_vertex(model.vertex[f2], translate, scale)
                 v3 = self.transform_vertex(model.vertex[f3], translate, scale)
-
+                
+                if v1.z < 0:
+                    print(v1)
+                    print(v2)
+                    print(v3)
+                    
                 if not texture:
                     self.triangle_babycenter(v1, v2, v3)
                 else:
@@ -208,17 +214,6 @@ class Render(object):
                     if(x < len(self.zBuffer) and y < len(self.zBuffer) and z > self.zBuffer[x][y]):
                         self.zBuffer[x][y] = z
                         self.glPoint(x, y, color)
-                    
-                    if self.active_shader:
-                                r, g, b = self.active_shader(self,
-                                                             barycentric=(u,v,w),
-                                                             vColor = color or self.currColor,
-                                                             texCoords = tvertex,
-                                )
-
-
-
-                                self.glPoint(x, y, color(r,g,b))
                     else:
                         self.glPoint(x,y, color)
 
