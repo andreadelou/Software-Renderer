@@ -12,16 +12,22 @@ def dword(dw):
     dw = struct.pack('=l', dw)   
     return dw  
 
-# def color_select(r, g, b):
-#     return bytes([int(b * 255), int(g * 255), int(r * 255)])
-def colorrgb(r, g, b):
+def color_select(r, g, b):
+    r = int(min(255, max(r, 0)))
+    g = int(min(255, max(g, 0)))
+    b = int(min(255, max(b, 0)))
     return bytes([b, g, r])
 
-def color_select(r, g, b):
-  return colorrgb(clamping(r*255), clamping(g*255), clamping(b*255))
+# def color_select(r, g, b):
+#     return bytes([int(b * 255), int(g * 255), int(r * 255)])
+# def colorrgb(r, g, b):
+#     return bytes([b, g, r])
+
+# def color_select(r, g, b):
+#   return colorrgb(round(r*255), round(g*255), round(b*255))
   
-def clamping(num):
-  return int(max(min(num, 255), 0))
+# def clamping(num):
+#   return int(max(min(num, 255), 0))
 
 def cross(v1, v2):
     return (
@@ -68,8 +74,8 @@ class Render(object):
         self.width = 0
         self.height = 0
         self.pixels = 0
-        self.colort = color_select(255, 255, 255)
-        self.background = color_select(0, 0, 0)
+        self.colort = color_select(128,128,128)
+        self.background = color_select(128,128,128)
         self.viewport_x = 0 
         self.viewport_y = 0
         self.viewport_height = 0
