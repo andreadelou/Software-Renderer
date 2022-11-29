@@ -105,10 +105,10 @@ class Render(object):
     
     def load(self, filename, translate, scale, texture = None):
         model = Obj(filename)
-        i=0 
+        # i=0 
         for face in model.faces:
             vcount = len(face)
-            i+=1
+            # i+=1
             if vcount == 4:
                 f1 = face[0][0] - 1
                 f2 = face[1][0] - 1
@@ -148,10 +148,10 @@ class Render(object):
                 v2 = self.transform_vertex(model.vertex[f2], translate, scale)
                 v3 = self.transform_vertex(model.vertex[f3], translate, scale)
                 
-                if v1.z < 0:
-                    print(v1)
-                    print(v2)
-                    print(v3)
+                # if v1.z < 0:
+                #     print(v1)
+                #     print(v2)
+                #     print(v3)
                     
                 if not texture:
                     self.triangle_babycenter(v1, v2, v3)
@@ -245,6 +245,6 @@ class Render(object):
             # Color table
             for y in range(self.height):
                 for x in range(self.width):
-                    file.write(self.framebuffer[y][x])
+                    file.write(self.framebuffer[x][y])
             file.close()
             
